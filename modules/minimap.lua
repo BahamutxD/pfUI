@@ -171,11 +171,8 @@ pfUI:RegisterModule("minimap", "vanilla:tbc", function ()
   pfUI.minimapZone.text:SetJustifyH("CENTER")
 
   pfUI.minimapZone:SetScript("OnEvent", function()
-    if not WorldMapFrame:IsShown() then
-      SetMapToCurrentZone()
-    end
-
     if C.appearance.minimap.coordstext ~= "off" then
+      SetMapToCurrentZone()
       local pvp, _, arena = GetZonePVPInfo()
       if arena then
         pfUI.minimapZone.text:SetTextColor(1.0, 0.1, 0.1)

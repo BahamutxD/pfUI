@@ -1033,8 +1033,7 @@ pfUI:RegisterModule("nameplates", "vanilla:tbc", function ()
 
       local parent = self
       local nameplate = self.nameplate
-      local plate = (C.nameplates["overlap"] == "1" or C.nameplates["vertical_offset"] ~= "0") and nameplate or parent
-      local clickable = C.nameplates["clickthrough"] ~= "1" and true or false
+      local plate = C.nameplates["overlap"] == "1" and nameplate or parent
 
       if C.nameplates["vertical_offset"] ~= "0" then
         nameplate:SetPoint("TOP", parent, "TOP", 0, tonumber(C.nameplates["vertical_offset"]))
@@ -1042,7 +1041,14 @@ pfUI:RegisterModule("nameplates", "vanilla:tbc", function ()
 
       -- replace clickhandler
       if C.nameplates["overlap"] == "1" or C.nameplates["vertical_offset"] ~= "0" then
-        plate:SetScript("OnClick", function() parent:Click() end)
+        parent:SetFrameLevel(0)
+        nameplate:SetScript("OnClick", function() parent:Click() end)
+
+        parent:EnableMouse(false)
+        nameplate:EnableMouse(true)
+      else
+        parent:EnableMouse(true)
+        nameplate:EnableMouse(false)
       end
 
       -- enable mouselook on rightbutton down
@@ -1052,21 +1058,12 @@ pfUI:RegisterModule("nameplates", "vanilla:tbc", function ()
         plate:SetScript("OnMouseDown", nil)
       end
 
-      -- disable all click events
-      parent:EnableMouse(false)
-      nameplate:EnableMouse(false)
-
-      -- make the actual plate clickable
-      plate:EnableMouse(clickable)
-    end
-
-    local hookOnDataChanged = nameplates.OnDataChanged
-    nameplates.OnDataChanged = function(self, nameplate)
-      hookOnDataChanged(self, nameplate)
-
-      -- make sure to keep mouse events disabled on parent nameplate
-      if (C.nameplates["overlap"] == "1" or C.nameplates["vertical_offset"] ~= "0") then
-        nameplate.parent:EnableMouse(false)
+      -- disable click event on frames
+      if C.nameplates["clickthrough"] == "1" then
+        nameplate:EnableMouse(false)
+        plate:EnableMouse(false)
+      else
+        plate:EnableMouse(true)
       end
     end
 

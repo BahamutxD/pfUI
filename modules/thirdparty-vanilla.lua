@@ -1234,7 +1234,7 @@ pfUI:RegisterModule("thirdparty-vanilla", "vanilla", function()
     SkinCheckbox(xpsp3_checkButton_modernNameplate)
     SkinCheckbox(xpsp3_checkButton_notify_flashTaskbarIcon)
     SkinCheckbox(xpsp3_checkButton_notify_playSystemDefaultSound)
-
+	
     local buttons = {
       xpsp3_button_close,
       xpsp3_button_cameraHeight_raise,
@@ -1244,5 +1244,5 @@ pfUI:RegisterModule("thirdparty-vanilla", "vanilla", function()
       SkinButton(button)
     end
   end)
-
+    
 end)

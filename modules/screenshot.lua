@@ -65,7 +65,53 @@ pfUI:RegisterModule("screenshot", "vanilla:tbc", function ()
     pfUI.screenshot:RegisterEvent("PLAYER_PVP_KILLS_CHANGED")
   end
   if C.screenshot.loot ~= "0" then
-    pfUI.screenshot:RegisterEvent("CHAT_MSG_LOOT")
+    pfUI.screenshot:RegisterEvent("LOOT_OPENED")
+  end
+
+  function pfUI.screenshot:LOOT_OPENED()
+    -- Create a frame for the delay timer
+    local delayFrame = CreateFrame("Frame")
+    local startTime = GetTime() -- Record the start time
+    local delay = 0.5 -- Delay in seconds before checking for high-quality loot
+
+    delayFrame:SetScript("OnUpdate", function()
+      local elapsed = GetTime() - startTime -- Calculate elapsed time
+      if elapsed >= delay then
+        -- Stop the OnUpdate script
+        delayFrame:SetScript("OnUpdate", nil)
+
+        -- Check if any item in the loot window meets the quality threshold
+        local hasHighQualityItem = false
+        for i = 1, GetNumLootItems() do
+          local _, _, _, quality = GetLootSlotInfo(i)
+          if quality and quality >= tonumber(C.screenshot.loot) then
+            hasHighQualityItem = true
+            break
+          end
+        end
+
+        if hasHighQualityItem then
+          -- Create another frame for the screenshot delay
+          local screenshotFrame = CreateFrame("Frame")
+          local screenshotStartTime = GetTime() -- Record the start time for the screenshot delay
+          local screenshotDelay = 2 -- Delay in seconds before taking the screenshot
+
+          screenshotFrame:SetScript("OnUpdate", function()
+            local screenshotElapsed = GetTime() - screenshotStartTime -- Calculate elapsed time
+            if screenshotElapsed >= screenshotDelay then
+              -- Stop the OnUpdate script
+              screenshotFrame:SetScript("OnUpdate", nil)
+
+              -- Take the screenshot
+              local dt = date("%a, %b %d, %Y %X")
+              local loc = string.format("%s - %s", GetRealZoneText(), GetSubZoneText())
+              local name = string.format("%s %s!", T["You opened"], "a corpse with high-quality loot")
+              self:CustomScreenshot("loot", dt, loc, name) -- Use `self` to call CustomScreenshot
+            end
+          end)
+        end
+      end
+    end)
   end
 
   function pfUI.screenshot:CustomScreenshot(source, ...)
@@ -167,5 +213,4 @@ pfUI:RegisterModule("screenshot", "vanilla:tbc", function ()
       end
     end
   end
-
 end)

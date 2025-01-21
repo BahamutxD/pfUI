@@ -1229,7 +1229,7 @@ pfUI:RegisterModule("gui", "vanilla:tbc", function ()
       "2:"..T["Ended"],
     }
     pfUI.gui.dropdowns.screenshot_loot = {"0:".._G.NONE}
-    for i=3, 5 do
+    for i=2, 5 do
       local entry = string.format("%d:%s", i, string.format("%s%s%s", _G.ITEM_QUALITY_COLORS[i].hex, _G[string.format("ITEM_QUALITY%d_DESC",i)], FONT_COLOR_CODE_CLOSE))
         table.insert(pfUI.gui.dropdowns.screenshot_loot, entry)
     end
@@ -1941,6 +1941,25 @@ pfUI:RegisterModule("gui", "vanilla:tbc", function ()
       CreateConfig(nil, T["Time Threshold"], C.buffbar.pdebuff, "threshold")
       CreateConfig(nil, T["Whitelist"], C.buffbar.pdebuff, "whitelist", "list")
       CreateConfig(nil, T["Blacklist"], C.buffbar.pdebuff, "blacklist", "list")
+    end)
+	
+	    CreateGUIEntry(T["Buffs"], T["Target Buff Bar"], function()
+      CreateConfig(nil, T["Enable Bar"], C.buffbar.tbuff, "enable", "checkbox")
+      CreateConfig(nil, T["Use Unit Fonts"], C.buffbar.tbuff, "use_unitfonts", "checkbox")
+      CreateConfig(nil, T["Sort Order"], C.buffbar.tbuff, "sort", "dropdown", pfUI.gui.dropdowns.buffbarsort)
+      CreateConfig(nil, T["Background Color"], C.buffbar.tbuff, "color", "color")
+      CreateConfig(nil, T["Border Color"], C.buffbar.tbuff, "bordercolor", "color")
+      CreateConfig(nil, T["Text Color"], C.buffbar.tbuff, "textcolor", "color")
+      CreateConfig(nil, T["Automatic Background Color"], C.buffbar.tbuff, "dtypebg", "checkbox")
+      CreateConfig(nil, T["Automatic Border Color"], C.buffbar.tbuff, "dtypeborder", "checkbox")
+      CreateConfig(nil, T["Automatic Text Color"], C.buffbar.tbuff, "dtypetext", "checkbox")
+      CreateConfig(nil, T["Color Debuff Stacks"], C.buffbar.tbuff, "colorstacks", "checkbox")
+      CreateConfig(nil, T["Buffbar Width"], C.buffbar.tbuff, "width")
+      CreateConfig(nil, T["Buffbar Height"], C.buffbar.tbuff, "height")
+      CreateConfig(nil, T["Filter Mode"], C.buffbar.tbuff, "filter", "dropdown", pfUI.gui.dropdowns.buffbarfilter)
+      CreateConfig(nil, T["Time Threshold"], C.buffbar.tbuff, "threshold")
+      CreateConfig(nil, T["Whitelist"], C.buffbar.tbuff, "whitelist", "list")
+      CreateConfig(nil, T["Blacklist"], C.buffbar.tbuff, "blacklist", "list")
     end)
 
     CreateGUIEntry(T["Buffs"], T["Target Debuff Bar"], function()

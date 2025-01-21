@@ -1,6 +1,7 @@
 pfUI:RegisterModule("buffwatch", "vanilla:tbc", function ()
   local rawborder, border = GetBorderSize("panels")
   local scanner = libtipscan:GetScanner("buffwatch")
+  
 
   local fcache = {}
   local function BuffIsVisible(config, name)
@@ -462,6 +463,34 @@ pfUI:RegisterModule("buffwatch", "vanilla:tbc", function ()
     pfUI.uf.player.debuffbar:SetPoint("BOTTOM", pfUI.uf.player, "TOP", 0, border*2+1)
     UpdateMovable(pfUI.uf.player.debuffbar)
   end
+  
+  -- create target buffbars
+if pfUI.uf.target and C.buffbar.tbuff.enable == "1" then
+    local config = C.buffbar.tbuff
+    local r, g, b, a = strsplit(",", config.color)
+    local br, bg, bb, ba = strsplit(",", config.bordercolor)
+    local tr, tg, tb, ta = strsplit(",", config.textcolor)
+
+    pfUI.uf.target.buffbar = CreateBuffBarFrame("Target", "HELPFUL")
+    pfUI.uf.target.buffbar:SetWidth(config.width == "-1" and C.unitframes.target.width or config.width)
+    pfUI.uf.target.buffbar:SetHeight(config.height)
+    pfUI.uf.target.buffbar.threshold = tonumber(config.threshold)
+    pfUI.uf.target.buffbar.config = config
+    pfUI.uf.target.buffbar.buffcmp = config.sort == "asc" and asc or desc
+    pfUI.uf.target.buffbar.color = { r = r, g = g, b = b, a = a }
+    pfUI.uf.target.buffbar.bordercolor = { r = br, g = bg, b = bb, a = ba }
+    pfUI.uf.target.buffbar.textcolor = { r = tr, g = tg, b = tb, a = ta }
+    pfUI.uf.target.buffbar.anchors = {
+        pfUI.uf.target,
+        pfUI.uf.target and pfUI.uf.target.debuffbar and pfUI.uf.target.debuffbar.bars,
+        pfUI.uf.target and pfUI.uf.target.debuffs,
+        pfUI.uf.target and pfUI.uf.target.buffs
+    }
+
+    pfUI.uf.target.buffbar:SetPoint("LEFT", pfUI.uf.target, "LEFT", 0, 0)
+    pfUI.uf.target.buffbar:SetPoint("BOTTOM", pfUI.uf.target, "TOP", 0, border*2+1)
+    UpdateMovable(pfUI.uf.target.buffbar)
+end
 
   -- create target debuffbars
   if pfUI.uf.target and C.buffbar.tdebuff.enable == "1" then
