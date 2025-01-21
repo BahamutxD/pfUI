@@ -37,6 +37,10 @@ local spells = {
     "Interface\\Icons\\Spell_Nature_HealingWaveLesser",
     "Interface\\Icons\\Spell_Nature_HealingWaveGreater",
   },
+   ["MAGE"] = {
+    "Interface\\Icons\\Spell_Fire_FlameBolt",
+    "Interface\\Icons\\Spell_Fire_SoulBurn",
+  },
 }
 
 -- use native IsSpellInRange checker for tbc and skip
